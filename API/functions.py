@@ -262,3 +262,28 @@ class modify():
         """%(dados["nome_usuario"], dados["email"], dados["senha"], dados["data_nasc"], id))
 
         return "sucesso"
+
+
+
+class UserLogin():
+    def login(self,login,senha):
+        conn = config.conn
+        cur = config.cur
+
+        query = cur.execute("""SELECT * FROM tb_usuarios where email = '%s' and senha='%s'"""%(login, senha))
+
+
+        result = json.dumps(cur.fetchall(), default=str)
+        result = json.loads(result)
+        if(not bool(result)):
+            return "Usuário Ou senha Inválidos"
+
+        keys = ['id_usuario','nome_usuario','data_nasc','senha','email','id_permissao','id_survey']
+
+        values = []
+        for i in result[0]:
+            values.append(i)
+
+        result = OrderedDict(zip(keys,values))
+
+        return result

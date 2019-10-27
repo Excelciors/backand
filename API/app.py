@@ -42,11 +42,38 @@ connection = config.DATABASE_URI
 
 parser = reqparse.RequestParser()
 
-class Auth(Resource):
+# class UserLogin(Resource):
+#     def post(self):
+#         data = parser.parse_args()
+#         current_user = UserModel.find_by_username(data['username'])
+
+#         if not current_user:
+#             return {'message': 'User {} doesn\'t exist'.format(data['username'])}
+        
+#         if UserModel.verify_hash(data['password'], current_user.password):
+#             access_token = create_access_token(identity = data['username'])
+#             refresh_token = create_refresh_token(identity = data['username'])
+#             return {
+#                 'message': 'Logged in as {}'.format(current_user.username),
+#                 'access_token': access_token,
+#                 'refresh_token': refresh_token
+#                 }
+#         else:
+#             return {'message': 'Wrong credentials'}
+
+
+class UserLogin(Resource):
 	def post(self):
-		parser.add_argument('dados_auth', type=str)
-		args = parser.parse_args()
-		dados = ast.literal_eval(args['dados_auth'])
+		parser.add_argument('login', type=str)
+		parser.add_argument('senha', type=str)
+		data = parser.parse_args()
+
+
+		login = data['login']
+		senha = data['senha']
+
+		return functions.UserLogin.login(self,login,senha)
+
 
 
 
@@ -166,6 +193,10 @@ api.add_resource(GetCuriosity, '/content/get_curiosity/<id>')
 #api.permissao
 api.add_resource(AddPermissao, '/permissao/add_permissao')
 api.add_resource(GetPermissao, '/permissao/get_permissao')
+
+
+#Login
+api.add_resource(UserLogin, '/login')
 
 
 
