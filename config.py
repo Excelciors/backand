@@ -5,8 +5,8 @@ import psycopg2
 
 
 
-DATABASE_URI = 'postgres+psycopg2://postgres:1234@localhost:5432/Excelcior'
+DATABASE_URI = 'postgres+psycopg2://postgres:1234@localhost:5432/excelcior'
 
 
-conn = psycopg2.connect(host="localhost",database="Excelcior", user="postgres", password="1234")
+conn = psycopg2.connect(host="localhost",database="excelcior", user="postgres", password="1234")
 cur = conn.cursor()

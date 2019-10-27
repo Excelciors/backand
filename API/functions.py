@@ -60,8 +60,21 @@ class inserts():
         """%(dados["curiosidade"], dados["link_aprofundamento"], dados["id_conteudo"]))
         conn.commit()
 
-        return "sucesso"        
+        return "sucesso"
 
+    def permissao(self,dados):
+        conn = config.conn
+        cur = config.cur
+
+        result = cur.execute("""
+            insert into tb_permissoes(tipo)
+            values('%s')
+        """%(dados["tipo"]))
+        conn.commit()
+
+        return "sucesso"
+
+    
 
 
 class selects():
@@ -135,6 +148,106 @@ class selects():
 
         return result
 
+    def conteudo(self,id):
+
+        conn = config.conn
+        cur = config.cur
+
+        query = cur.execute("SELECT * FROM tb_conteudos Where id_topicos = %s"%id)
+
+        
+        #result = cur.fetchall()
+
+        result = json.dumps(cur.fetchall(), default=str)
+        result = json.loads(result)
+
+        keys = ['id_conteudo','id_topico','content','nome_conteudo']
+
+        values = []
+        for i in result[0]:
+            values.append(i)
+
+        result = OrderedDict(zip(keys,values))
+        # cur.close()
+        # conn.close()
+
+        return result
+
+    def topico(self):
+
+        conn = config.conn
+        cur = config.cur
+
+        query = cur.execute("SELECT * FROM tb_topicos ")
+
+        
+        #result = cur.fetchall()
+
+        result = json.dumps(cur.fetchall(), default=str)
+        result = json.loads(result)
+
+        #keys = ['id_usuario','nome_usuario','data_nasc','senha','email','id_permissao','id_survey']
+
+        values = []
+        for i in result:
+            values.append(i)
+
+        #result = OrderedDict(zip(keys,values))
+        # cur.close()
+        # conn.close()
+
+        return result
+
+
+    def curiosity(self,id):
+
+        conn = config.conn
+        cur = config.cur
+
+        query = cur.execute("SELECT * FROM tb_curiosidades Where id_conteudo = %s"%id)
+
+        
+        #result = cur.fetchall()
+
+        result = json.dumps(cur.fetchall(), default=str)
+        result = json.loads(result)
+
+        # keys = ['id_curiosidade','curiosidade','link_aprofundamento','id_conteudo']
+
+        values = []
+        for i in result:
+            values.append(i)
+
+        # result = OrderedDict(zip(keys,values))
+        # cur.close()
+        # conn.close()
+
+        return result
+
+    def permissao(self):
+    
+        conn = config.conn
+        cur = config.cur
+
+        query = cur.execute("SELECT * FROM tb_permissoes ")
+
+        
+        #result = cur.fetchall()
+
+        result = json.dumps(cur.fetchall(), default=str)
+        result = json.loads(result)
+
+        #keys = ['id_usuario','nome_usuario','data_nasc','senha','email','id_permissao','id_survey']
+
+        values = []
+        for i in result:
+            values.append(i)
+
+        #result = OrderedDict(zip(keys,values))
+        # cur.close()
+        # conn.close()
+
+        return result
 
 
 class modify():

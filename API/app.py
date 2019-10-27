@@ -116,7 +116,37 @@ class GetClasses(Resource):
 	def get(self):
 		retorno = functions.selects.classes(self)
 		return retorno
-    		
+
+class GetConteudo(Resource):
+	def get(self,id):
+		retorno = functions.selects.conteudo(self,id)
+		return retorno
+
+class GetTopic(Resource):
+	def get(self):
+		retorno = functions.selects.topico(self)
+		return retorno
+
+class GetCuriosity(Resource):
+	def get(self,id):
+		retorno = functions.selects.curiosity(self,id)
+		return retorno
+
+class GetPermissao(Resource):
+	def get(self):
+		retorno = functions.selects.permissao(self)
+		return retorno
+
+class AddPermissao(Resource):
+	def post(self):
+		parser.add_argument('dados_permissao', type=str)
+		args = parser.parse_args()
+		dados = ast.literal_eval(args['dados_permissao'])
+
+		retorno = functions.inserts.permissao(self,dados)
+		return retorno
+
+
 #apis usuário
 api.add_resource(InsertUser, '/user/add_user')
 api.add_resource(GetAllUsers, '/user/get_all')
@@ -129,11 +159,17 @@ api.add_resource(AddClass, '/content/add_class')
 api.add_resource(AddContent, '/content/add_content')
 api.add_resource(AddCuriosity, '/content/add_curiosity')
 api.add_resource(GetClasses, '/content/get_classes')
+api.add_resource(GetConteudo, '/content/get_conteudo/<id>')
+api.add_resource(GetTopic, '/content/get_topic')
+api.add_resource(GetCuriosity, '/content/get_curiosity/<id>')
 
+#api.permissao
+api.add_resource(AddPermissao, '/permissao/add_permissao')
+api.add_resource(GetPermissao, '/permissao/get_permissao')
 
 
 
 
 if __name__ == '__main__':
-	app.run(port='5002')
+	app.run(port='3333')
 
